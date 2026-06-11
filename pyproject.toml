@@ -6,5 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12.11"
 dependencies = [
     "marker-pdf>=1.10.2",
+    "openpyxl>=3.1.5",
     "python-dotenv>=1.2.2",
 ]
