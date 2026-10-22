@@ -25,3 +25,13 @@ A single-script batch PDF-to-Markdown converter built on the [`marker-pdf`](http
 4. For each PDF: runs conversion, writes `./output_markdowns/<stem>/<stem>.md` and any extracted images alongside it.
 
 **I/O directories** are created automatically if missing; dropping PDFs into `input_pdfs/` and running `main.py` is the full workflow.
+
+## LLM mode (`use_llm`)
+
+`main.py` deliberately does **not** enable marker's `use_llm` option, so all processing stays local. Keep it that way unless the user asks otherwise. Trade-offs if it is enabled:
+- It does not replace the local Surya models — it adds an extra LLM correction pass on top, so the unverified weight download remains.
+- With a cloud service (`gemini`, `claude`, `openai`, `azure_openai`, `vertex` in `marker/services/`) page images and text snippets leave the machine — not acceptable for confidential PDFs.
+- PDF content reaches the LLM, so prompt injection can alter the Markdown output (low impact: output is text only, nothing is executed).
+- Requires an API key — never commit it.
+- Benefit is quality only (complex tables, equations, forms), not security.
+- If LLM mode is needed for confidential documents, use the `ollama` service so data stays local.
